@@ -1,4 +1,4 @@
-@for (tempProduct of products; track tempProduct) {
+@for (tempProduct of products; track tempProduct.id) {
   <p>
     {{ tempProduct.name }}: {{ tempProduct.unitPrice | currency:'USD' }}
   </p>
