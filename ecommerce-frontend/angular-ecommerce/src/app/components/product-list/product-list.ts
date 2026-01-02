@@ -34,7 +34,6 @@ export class ProductList {
       this.currentCategoryId = 1;
     }
 
-
     this.productService.getProductList(this.currentCategoryId).subscribe(
       data => {
         this.products = data;
