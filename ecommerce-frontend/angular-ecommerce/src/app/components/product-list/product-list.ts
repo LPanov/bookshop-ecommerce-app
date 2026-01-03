@@ -14,6 +14,7 @@ export class ProductList {
 
   products: Product[] = [];
   currentCategoryId: number | undefined;
+  searchMode: boolean = false;
 
   constructor(private productService: ProductService,
               private route: ActivatedRoute
@@ -21,12 +22,36 @@ export class ProductList {
 
  ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      this.listProducts(params);
+      this.listProducts();
     });
   }
 
-  listProducts(params: any) {
-    const idParam = params.get('id');
+  listProducts() {
+
+    this.searchMode = this.route.snapshot.paramMap.has('keyword');
+
+    if (this.searchMode) {
+      this.handleSearchProducts();
+    } 
+    else {
+      this.handleListProducts();
+    }
+
+    
+  }
+
+  handleSearchProducts() {
+    const keyword: string = this.route.snapshot.paramMap.get('keyword')!;
+
+    this.productService.searchProducts(keyword).subscribe(
+      data => {
+        this.products = data;
+      }
+    );
+  }
+
+  handleListProducts() {
+    const idParam = this.route.snapshot.paramMap.get('id');
 
     if (idParam !== null) {
       this.currentCategoryId = +idParam; 
